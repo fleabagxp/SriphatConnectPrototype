@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sriphat Care Connect - Futuristic Premium Caregiver</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5', 
+                        primaryDark: '#3730A3',
+                        secondary: '#10B981', 
+                        accent: '#F59E0B', 
+                        dark: '#1F2937',
+                        bgLight: '#F3F4F6' 
+                    },
+                    fontFamily: {
+                        sans: ['Prompt', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'premium': '0 10px 30px -10px rgba(79, 70, 229, 0.2)',
+                        'premium-hover': '0 20px 40px -15px rgba(79, 70, 229, 0.3)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Prompt', sans-serif; background-color: #E5E7EB; }
+        .hide { display: none !important; }
+        
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+
+        .glass-card { 
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 15px 30px rgba(79, 70, 229, 0.1);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        input[type="radio"] {
+            appearance: none;
+            width: 1.5rem;
+            height: 1.5rem;
+            border: 2px solid #D1D5DB;
+            border-radius: 50%;
+            background-color: white;
+            transition: all 0.2s;
+            position: relative;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        input[type="radio"]:checked {
+            border-color: #4F46E5;
+            background-color: #4F46E5;
+        }
+        input[type="radio"]:checked::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 0.6rem;
+            height: 0.6rem;
+            background-color: white;
+            border-radius: 50%;
+        }
+
+        .selected-shift {
+            border: 2px solid #4F46E5 !important;
+            background: rgba(79, 70, 229, 0.05) !important;
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.1) !important;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #4F46E5 0%, #10B981 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Dummy Map Background */
+        .dummy-map-bg {
+            background-color: #E5E7EB;
+            background-image: radial-gradient(#CBD5E1 1px, transparent 1px);
+            background-size: 10px 10px;
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased min-h-screen flex justify-center items-center p-4">
+
+    <!-- Mobile App Container -->
+    <div class="w-full max-w-md bg-bgLight h-[812px] relative shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] overflow-hidden flex flex-col rounded-[2.5rem] border-[8px] border-dark">
+        
+        <!-- StatusBar Simulator -->
+        <div class="h-6 bg-primaryDark flex justify-between items-center px-6 text-white text-xs z-50 relative">
+            <span>9:41</span>
+            <div class="flex gap-1">
+                <i class="fa-solid fa-signal"></i>
+                <i class="fa-solid fa-wifi"></i>
+                <i class="fa-solid fa-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- App Header -->
+        <header class="sticky top-0 bg-primary/90 backdrop-blur-sm text-white p-5 flex justify-between items-center z-40 rounded-b-3xl">
+            <div class="flex items-center gap-3">
+                <div class="p-2.5 bg-white/10 rounded-2xl">
+                    <i class="fa-solid fa-hospital-user text-2xl"></i>
+                </div>
+                <div>
+                    <p class="text-xs text-indigo-200">ยินดีต้อนรับสู่</p>
+                    <h1 class="text-xl font-bold leading-tight tracking-tight">Sriphat <span class="font-light">Connect</span></h1>
+                </div>
+            </div>
+            <button class="w-10 h-10 rounded-2xl bg-white/10 flex items-center justify-center relative hover:bg-white/20 transition">
+                <i class="fa-solid fa-bell"></i>
+                <span class="absolute top-2 right-2.5 w-2 h-2 bg-accent rounded-full"></span>
+            </button>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 p-5 overflow-y-auto pb-32 relative z-10" id="mainContainer">
+            
+            <!-- ================= VIEW 1: เลือกบริการ (Home) ================= -->
+            <div id="view1" class="block animate-fade-in space-y-6">
+                <div class="mt-2">
+                    <h2 class="text-3xl font-extrabold text-dark leading-tight">ค้นหาผู้ดูแล<br><span class="gradient-text">ระดับพรีเมียม</span></h2>
+                    <p class="text-sm text-gray-500 mt-2 max-w-[90%]">ปลอดภัย อุ่นใจ มืออาชีพ เหมือนมีญาติดูแลใกล้ชิดที่โรงพยาบาลศรีพัฒน์</p>
+                </div>
+
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <input type="text" placeholder="ค้นหาบริการ หรือ ประเภทผู้ดูแล..." class="w-full bg-white border border-gray-200 rounded-full py-3 pl-12 pr-4 shadow-inner text-sm focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition">
+                </div>
+
+                <h3 class="text-lg font-bold text-dark pt-2">เลือกสถานที่รับบริการ</h3>
+
+                <!-- Service Card 1 (รพ.) -->
+                <div class="glass-card p-6 relative group cursor-pointer border-l-4 border-l-primary" onclick="selectService('hospital')">
+                    <div class="absolute top-0 right-6 bg-gradient-to-r from-accent to-yellow-400 text-white text-[11px] font-bold px-3 py-1.5 rounded-b-xl shadow-md">
+                        <i class="fa-solid fa-star mr-1"></i> Premium Care
+                    </div>
+                    <div class="flex items-center gap-5">
+                        <div class="bg-indigo-100 text-primary p-5 rounded-2xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-bed-pulse text-3xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-bold text-gray-900">เฝ้าไข้ใน รพ. ศรีพัฒน์</h3>
+                            <p class="text-xs text-gray-500 mt-1">ดูแลที่หอผู้ป่วย, ห้องพิเศษ หรือ ICU</p>
+                        </div>
+                        <div class="text-gray-300 group-hover:text-primary transition">
+                            <i class="fa-solid fa-chevron-right text-lg"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service Card 2 (ที่บ้าน) -->
+                <div class="glass-card p-6 relative group cursor-pointer border-l-4 border-l-secondary" onclick="selectService('home')">
+                    <div class="flex items-center gap-5">
+                        <div class="bg-emerald-50 text-secondary p-5 rounded-2xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-house-medical text-3xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-bold text-gray-900">ดูแลต่อเนื่องที่บ้าน</h3>
+                            <p class="text-xs text-gray-500 mt-1">ดูแลเฝ้าไข้ที่บ้าน อุ่นใจ ไปกับศรีพัฒน์</p>
+                        </div>
+                        <div class="text-gray-300 group-hover:text-secondary transition">
+                            <i class="fa-solid fa-chevron-right text-lg"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= VIEW 2: เลือกระยะเวลาและกลุ่มอาการ (Booking) ================= -->
+            <div id="view2" class="hide animate-fade-in space-y-6">
+                <div class="flex items-center justify-between">
+                    <button onclick="goToStep(1)" class="w-9 h-9 flex items-center justify-center bg-white rounded-full shadow hover:bg-gray-50 transition text-gray-600">
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </button>
+                    <span class="text-sm font-medium text-gray-500">ขั้นตอนที่ 1/2</span>
+                    <div class="w-9"></div>
+                </div>
+                
+                <div class="bg-white p-1.5 rounded-full flex gap-1 shadow-inner border border-gray-100">
+                    <div class="flex-1 text-center py-2 px-3 rounded-full bg-primary text-white text-xs font-medium">1. เลือกแพ็กเกจ</div>
+                    <div class="flex-1 text-center py-2 px-3 rounded-full text-gray-500 text-xs font-medium">2. ระบุข้อมูล</div>
+                </div>
+
+                <h2 class="text-2xl font-bold text-dark">เลือกระยะเวลา <span class="text-primary">(Shift)</span></h2>
+                
+                <div class="grid grid-cols-3 gap-3">
+                    <div class="glass-card p-3 cursor-pointer border-2 border-transparent text-center hover:border-yellow-200" onclick="selectShift(this)">
+                        <div class="mx-auto p-2.5 bg-yellow-50 rounded-full w-10 h-10 flex items-center justify-center text-yellow-500 mb-2">
+                            <i class="fa-solid fa-cloud-sun text-lg"></i>
+                        </div>
+                        <h4 class="font-bold text-[13px] text-gray-900">เวรเช้า</h4>
+                        <p class="text-[9px] text-gray-500 mt-0.5">08:00 - 16:00 น.</p>
+                    </div>
+                    <div class="glass-card p-3 cursor-pointer border-2 border-transparent text-center hover:border-orange-200" onclick="selectShift(this)">
+                        <div class="mx-auto p-2.5 bg-orange-50 rounded-full w-10 h-10 flex items-center justify-center text-orange-500 mb-2">
+                            <i class="fa-solid fa-sun text-lg"></i>
+                        </div>
+                        <h4 class="font-bold text-[13px] text-gray-900">เวรบ่าย</h4>
+                        <p class="text-[9px] text-gray-500 mt-0.5">16:00 - 24:00 น.</p>
+                    </div>
+                    <div class="glass-card p-3 cursor-pointer border-2 border-transparent text-center hover:border-indigo-200" onclick="selectShift(this)">
+                        <div class="mx-auto p-2.5 bg-indigo-50 rounded-full w-10 h-10 flex items-center justify-center text-indigo-500 mb-2">
+                            <i class="fa-solid fa-moon text-lg"></i>
+                        </div>
+                        <h4 class="font-bold text-[13px] text-gray-900">เวรดึก</h4>
+                        <p class="text-[9px] text-gray-500 mt-0.5">24:00 - 08:00 น.</p>
+                    </div>
+                    
+                    <div class="glass-card p-5 cursor-pointer border-2 border-transparent col-span-3 relative overflow-hidden group bg-gradient-to-br from-orange-50/70 to-yellow-50/70" onclick="selectShift(this)">
+                        <div class="absolute -right-3 -bottom-5 text-accent/10 text-7xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-clock-rotate-left"></i>
+                        </div>
+                        <div class="absolute top-0 right-0 bg-gradient-to-r from-red-500 to-accent text-white text-[11px] font-bold px-4 py-1.5 rounded-bl-2xl shadow-md">
+                            <i class="fa-solid fa-crown mr-1"></i> แพคเกจสุดคุ้ม
+                        </div>
+                        <div class="flex items-center gap-4 relative z-10 mt-2">
+                            <div class="p-3 bg-white rounded-2xl text-accent shadow-sm">
+                                <i class="fa-solid fa-user-nurse text-2xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg text-gray-900">เวร 24 ชั่วโมง</h4>
+                                <p class="text-xs text-gray-600 mt-1">ดูแลครอบคลุมทุกช่วงเวลา (ประหยัดกว่า)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 class="text-2xl font-bold text-dark pt-2">ประเมิน <span class="text-primary">อาการผู้ป่วย</span></h2>
+                
+                <div class="space-y-3">
+                    <label class="glass-card p-4 flex items-center gap-3 cursor-pointer border-2 border-transparent hover:border-emerald-200 has-[:checked]:border-secondary has-[:checked]:bg-emerald-50/50">
+                        <input type="radio" name="group" class="checked:bg-secondary checked:border-secondary">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-secondary"></span>
+                                <h4 class="font-semibold text-sm text-gray-900">กลุ่ม 1: อาการทั่วไป</h4>
+                            </div>
+                            <p class="text-[11px] text-gray-500 mt-1 ml-4 line-clamp-1">รู้สึกตัวดี, พักฟื้น, ไข้หวัด</p>
+                        </div>
+                        <div class="text-emerald-600 font-bold text-sm bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-100 shadow-sm whitespace-nowrap">X,XXX ฿</div>
+                    </label>
+
+                    <label class="glass-card p-4 flex items-center gap-3 cursor-pointer border-2 border-transparent hover:border-yellow-200 has-[:checked]:border-accent has-[:checked]:bg-yellow-50/50">
+                        <input type="radio" name="group" class="checked:bg-accent checked:border-accent">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-accent"></span>
+                                <h4 class="font-semibold text-sm text-gray-900">กลุ่ม 2: เตรียม/หลังผ่าตัด</h4>
+                            </div>
+                            <p class="text-[11px] text-gray-500 mt-1 ml-4 line-clamp-1">Admit เตรียมความพร้อม</p>
+                        </div>
+                        <div class="text-emerald-600 font-bold text-sm bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-100 shadow-sm whitespace-nowrap">X,XXX ฿</div>
+                    </label>
+
+                    <label class="glass-card p-4 flex items-center gap-3 cursor-pointer border-2 border-transparent hover:border-orange-200 has-[:checked]:border-orange-500 has-[:checked]:bg-orange-50/50">
+                        <input type="radio" name="group" class="checked:bg-orange-500 checked:border-orange-500">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-orange-500"></span>
+                                <h4 class="font-semibold text-sm text-gray-900">กลุ่ม 3: ผ่าตัดใหญ่</h4>
+                            </div>
+                            <p class="text-[11px] text-gray-500 mt-1 ml-4 line-clamp-1">Admit ผ่าตัดใหญ่ นอนหลายคืน</p>
+                        </div>
+                        <div class="text-emerald-600 font-bold text-sm bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-100 shadow-sm whitespace-nowrap">X,XXX ฿</div>
+                    </label>
+
+                    <label class="glass-card p-4 flex items-center gap-3 cursor-pointer border-2 border-transparent hover:border-red-200 has-[:checked]:border-red-500 has-[:checked]:bg-red-50/50">
+                        <input type="radio" name="group" class="checked:bg-red-500 checked:border-red-500">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-red-500"></span>
+                                <h4 class="font-semibold text-sm text-gray-900">กลุ่ม 4: วิกฤต/ติดเตียง</h4>
+                            </div>
+                            <p class="text-[11px] text-gray-500 mt-1 ml-4 line-clamp-1">Case ใส่ท่อ ไม่มีคนเฝ้าตลอด</p>
+                        </div>
+                        <div class="text-emerald-600 font-bold text-sm bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-100 shadow-sm whitespace-nowrap">X,XXX ฿</div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- ================= VIEW 3_HOSPITAL: ระบุสถานที่ (กรณีเลือกโรงพยาบาล) ================= -->
+            <div id="view3_hospital" class="hide animate-fade-in space-y-6">
+                 <div class="flex items-center justify-between">
+                    <button onclick="goToStep(2)" class="w-9 h-9 flex items-center justify-center bg-white rounded-full shadow hover:bg-gray-50 transition text-gray-600">
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </button>
+                    <span class="text-sm font-medium text-gray-500">ขั้นตอนที่ 2/2</span>
+                    <div class="w-9"></div>
+                </div>
+
+                <div class="bg-white p-1.5 rounded-full flex gap-1 shadow-inner border border-gray-100">
+                    <div class="flex-1 text-center py-2 px-3 rounded-full text-gray-500 text-xs font-medium">1. เลือกแพ็กเกจ</div>
+                    <div class="flex-1 text-center py-2 px-3 rounded-full bg-primary text-white text-xs font-medium">2. ระบุข้อมูล</div>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-dark">ข้อมูล <span class="text-primary">วันและสถานที่ (ใน รพ.)</span></h2>
+
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 space-y-5">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">วันที่เริ่มรับบริการ</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-calendar-days absolute left-4 top-1/2 -translate-y-1/2 text-primary/70"></i>
+                            <input type="date" class="w-full border border-gray-200 rounded-xl py-3 pl-12 pr-4 text-sm focus:ring-2 focus:ring-primary/30 focus:border-primary outline-none transition appearance-none">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">ระบุตึก / หอผู้ป่วย / เลขห้อง</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-hospital absolute left-4 top-1/2 -translate-y-1/2 text-primary/70"></i>
+                            <input type="text" placeholder="เช่น อาคารศรีพัฒน์ ชั้น 12 ห้อง 1205" class="w-full border border-gray-200 rounded-xl py-3 pl-12 pr-4 text-sm focus:ring-2 focus:ring-primary/30 focus:border-primary outline-none transition">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative overflow-hidden bg-gradient-to-br from-gray-900 to-dark p-6 rounded-3xl text-white shadow-xl">
+                    <div class="absolute -right-4 -top-4 w-24 h-24 bg-secondary rounded-full opacity-20 blur-2xl"></div>
+                    <div class="relative z-10 flex items-center gap-4">
+                        <div class="p-3 bg-white/10 rounded-2xl text-secondary">
+                            <i class="fa-solid fa-user-check text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg">ระบบจับคู่ทีมพยาบาลเรียบร้อย</h3>
+                            <p class="text-xs text-gray-300 mt-1">พร้อมให้บริการตามวันและเวลาที่ระบุ</p>
+                        </div>
+                    </div>
+                    <div class="mt-5 pt-5 border-t border-white/10 flex justify-between items-end relative z-10">
+                        <span class="text-sm text-gray-300">ราคาประเมินเบื้องต้น:</span>
+                        <span class="text-3xl font-extrabold text-white">X,XXX <span class="text-base font-medium text-gray-400">บาท</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= VIEW 3_HOME: ระบุสถานที่ (กรณีเลือกดูแลที่บ้าน) ================= -->
+            <div id="view3_home" class="hide animate-fade-in space-y-6">
+                 <div class="flex items-center justify-between">
+                    <button onclick="goToStep(2)" class="w-9 h-9 flex items-center justify-center bg-white rounded-full shadow hover:bg-gray-50 transition text-gray-600">
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </button>
+                    <span class="text-sm font-medium text-gray-500">ขั้นตอนที่ 2/2</span>
+                    <div class="w-9"></div>
+                </div>
+
+                <div class="bg-white p-1.5 rounded-full flex gap-1 shadow-inner border border-gray-100">
+                    <div class="flex-1 text-center py-2 px-3 rounded-full text-gray-500 text-xs font-medium">1. เลือกแพ็กเกจ</div>
+                    <div class="flex-1 text-center py-2 px-3 rounded-full bg-secondary text-white text-xs font-medium">2. ระบุข้อมูล</div>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-dark">ข้อมูล <span class="text-secondary">วันและสถานที่ (ที่บ้าน)</span></h2>
+
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 space-y-5">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">วันที่เริ่มรับบริการ</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-calendar-days absolute left-4 top-1/2 -translate-y-1/2 text-secondary/70"></i>
+                            <input type="date" class="w-full border border-gray-200 rounded-xl py-3 pl-12 pr-4 text-sm focus:ring-2 focus:ring-secondary/30 focus:border-secondary outline-none transition appearance-none">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">ที่อยู่ / เลขที่บ้าน</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-location-dot absolute left-4 top-3 text-secondary/70"></i>
+                            <textarea rows="2" placeholder="เช่น 123/45 หมู่บ้านสุขใจ ซอย 1 ถนนเชียงใหม่-หางดง..." class="w-full border border-gray-200 rounded-xl py-3 pl-12 pr-4 text-sm focus:ring-2 focus:ring-secondary/30 focus:border-secondary outline-none transition resize-none"></textarea>
+                        </div>
+                        
+                        <!-- Dummy Google Maps Pin Area -->
+                        <div class="mt-3 dummy-map-bg relative rounded-xl overflow-hidden border border-gray-300 h-32 flex flex-col items-center justify-center cursor-pointer hover:opacity-90 transition shadow-inner group">
+                            <!-- Overlay Map Marker -->
+                            <div class="relative z-10 flex flex-col items-center transform group-hover:-translate-y-1 transition">
+                                <i class="fa-solid fa-map-location-dot text-4xl text-red-500 drop-shadow-md"></i>
+                                <span class="mt-2 text-[11px] font-bold text-gray-700 bg-white/90 px-3 py-1.5 rounded-full shadow-sm backdrop-blur-sm border border-gray-100">
+                                    <i class="fa-solid fa-location-crosshairs mr-1 text-primary"></i> คลิกเพื่อปักหมุดตำแหน่ง (Google Maps)
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative overflow-hidden bg-gradient-to-br from-gray-900 to-dark p-6 rounded-3xl text-white shadow-xl">
+                    <div class="absolute -right-4 -top-4 w-24 h-24 bg-secondary rounded-full opacity-20 blur-2xl"></div>
+                    <div class="relative z-10 flex items-center gap-4">
+                        <div class="p-3 bg-white/10 rounded-2xl text-secondary">
+                            <i class="fa-solid fa-house-circle-check text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg">ประเมินระยะทางและทีมผู้ดูแล</h3>
+                            <p class="text-xs text-gray-300 mt-1">พร้อมเดินทางไปให้บริการตามที่อยู่ของคุณ</p>
+                        </div>
+                    </div>
+                    <div class="mt-5 pt-5 border-t border-white/10 flex justify-between items-end relative z-10">
+                        <span class="text-sm text-gray-300">ราคาประเมินเบื้องต้น:</span>
+                        <span class="text-3xl font-extrabold text-white">X,XXX <span class="text-base font-medium text-gray-400">บาท</span></span>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Fixed Bottom Action Button Area -->
+        <div id="actionBtnArea" class="absolute bottom-6 left-0 right-0 px-5 z-50 hide animate-fade-in pointer-events-auto">
+            <button id="mainActionBtn" onclick="" class="w-full bg-primary text-white font-bold py-4 rounded-2xl shadow-premium hover:bg-primaryDark hover:shadow-premium-hover transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 text-lg cursor-pointer">
+                <span>ดำเนินการต่อ</span>
+                <i class="fa-solid fa-arrow-right text-sm"></i>
+            </button>
+        </div>
+
+        <!-- Bottom Navigation Bar -->
+        <nav id="bottomNav" class="absolute bottom-4 left-1/2 -translate-x-1/2 w-[90%] bg-white/90 backdrop-blur-lg rounded-full shadow-2xl flex justify-around items-center p-2.5 z-50 border border-gray-100 pointer-events-auto">
+            <button class="flex flex-col items-center gap-1.5 text-primary p-3 rounded-full bg-primary/5 cursor-pointer" onclick="goToStep(1)">
+                <i class="fa-solid fa-house-chimney text-xl"></i>
+                <span class="text-[10px] font-bold">หน้าแรก</span>
+            </button>
+            <button class="flex flex-col items-center gap-1.5 text-gray-400 p-3 hover:text-primary transition cursor-pointer" onclick="goToStep(2)">
+                <i class="fa-regular fa-calendar-check text-xl"></i>
+                <span class="text-[10px] font-medium">การจอง</span>
+            </button>
+            <button class="flex flex-col items-center gap-1.5 text-gray-400 p-3 hover:text-primary transition cursor-pointer">
+                <i class="fa-regular fa-comment-dots text-xl"></i>
+                <span class="text-[10px] font-medium">แชท</span>
+            </button>
+            <button class="flex flex-col items-center gap-1.5 text-gray-400 p-3 hover:text-primary transition cursor-pointer">
+                <i class="fa-regular fa-user text-xl"></i>
+                <span class="text-[10px] font-medium">โปรไฟล์</span>
+            </button>
+        </nav>
+    </div>
+
+    <script>
+        let currentServiceType = 'hospital'; // เก็บสถานะว่าเลือกบริการ รพ. หรือ ที่บ้าน
+
+        function selectService(type) {
+            currentServiceType = type;
+            goToStep(2);
+        }
+
+        function goToStep(step) {
+            // ซ่อนหน้าจอทั้งหมดก่อน
+            document.getElementById('view1').classList.add('hide');
+            document.getElementById('view2').classList.add('hide');
+            document.getElementById('view3_hospital').classList.add('hide');
+            document.getElementById('view3_home').classList.add('hide');
+            
+            const actionArea = document.getElementById('actionBtnArea');
+            const actionBtn = document.getElementById('mainActionBtn');
+            const navBar = document.getElementById('bottomNav');
+
+            if (step === 1) {
+                // หน้าแรก
+                document.getElementById('view1').classList.remove('hide');
+                actionArea.classList.add('hide');
+                navBar.classList.remove('hide'); 
+            } 
+            else if (step === 2) {
+                // หน้า 2: เลือกเวลา/อาการ
+                document.getElementById('view2').classList.remove('hide');
+                actionArea.classList.remove('hide');
+                navBar.classList.add('hide'); 
+                
+                // ตัดสินใจว่าจะไปหน้า 3 แบบไหน (รพ. หรือ บ้าน)
+                let nextStep = currentServiceType === 'home' ? "'3_home'" : "'3_hospital'";
+                
+                actionBtn.setAttribute('onclick', `goToStep(${nextStep})`);
+                actionBtn.innerHTML = '<span>ดำเนินการต่อ</span><i class="fa-solid fa-arrow-right text-sm"></i>';
+                
+                // เปลี่ยนสีปุ่มตามประเภทให้กลมกลืน
+                if(currentServiceType === 'home') {
+                    actionBtn.className = actionBtn.className.replace('bg-primary', 'bg-secondary').replace('bg-primaryDark', 'bg-emerald-700');
+                } else {
+                    actionBtn.className = actionBtn.className.replace('bg-secondary', 'bg-primary').replace('bg-emerald-700', 'bg-primaryDark');
+                }
+            } 
+            else if (step === '3_hospital' || step === '3_home') {
+                // หน้า 3: กรอกข้อมูลสถานที่ (แยกตาม Id)
+                document.getElementById('view' + step).classList.remove('hide');
+                actionArea.classList.remove('hide');
+                navBar.classList.add('hide'); 
+                
+                actionBtn.setAttribute('onclick', 'confirmBooking()');
+                actionBtn.innerHTML = '<span>ยืนยันการจองและชำระเงิน</span><i class="fa-solid fa-check-double text-sm"></i>';
+                
+                // หน้าสุดท้ายเปลี่ยนสีปุ่มเป็นสีเขียวเสมอหรือคงสีตามธีม
+                if (!actionBtn.className.includes('bg-secondary')) {
+                    actionBtn.className = actionBtn.className.replace('bg-primary', 'bg-secondary').replace('bg-primaryDark', 'bg-emerald-700');
+                }
+            }
+            
+            // Scroll to top
+            document.getElementById('mainContainer').scrollTop = 0;
+        }
+
+        function selectShift(element) {
+            let cards = element.parentElement.querySelectorAll('.glass-card');
+            cards.forEach(card => {
+                card.classList.remove('selected-shift');
+            });
+            element.classList.add('selected-shift');
+        }
+
+        function confirmBooking() {
+            alert('🎉 จำลองการยืนยันการจองเรียบร้อยแล้ว! ระบบกำลังนำคุณไปสู่หน้าชำระเงิน...');
+        }
+    </script>
+</body>
+</html>
